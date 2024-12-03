@@ -54,6 +54,38 @@ piece_done:
 
 printBoard:
     # Function prologue
+    
+    la $t0, board
+    lw $t1, board_width		# width
+    lw $t2, board_height	# height
+    li $t3, 0 			# row index
+    
+    row_loop:
+    	beq $t3, $t2, row_loop_done	#if row index == height
+    	
+    	li $t4, 0		# col index
+    	
+    	col_loop:
+    		beq $t4, $t1, increment_row_loop		#if col index == width
+    		
+    		# Calculate offset
+    		mul $t5, $t3, $t1
+    		add $t5, $t5, $t4
+    		
+    		# get address
+    		add $t6, $t5, $t0		#t6, now sotres the correct address
+    		
+    		lw $a0, 0($t6)
+    		li $v0, 4		#print string
+    		syscall
+    		
+    		j row_loop
+    	
+    	increment_row_loop:
+    	addi $t3, $t3, 1
+    
+    row_loop_done:
+    
 
     # Function epilogue
     
