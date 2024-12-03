@@ -149,9 +149,10 @@ place_tile:
     
     lb $t4, 0($t3)		# Get value of board
     
-    bgt $t3, $zero, returnOne	# occupied check
+    bgt $t4, $zero, returnOne	# occupied check
     
     sb $a2, 0($t3)
+    li $v0, 0
     
     j place_tile_exit
     
