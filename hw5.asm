@@ -77,9 +77,9 @@ piece_done:
     li $t2, 3
     
     beq $s2, $zero, exitPlacePiece
-    beq $s2, $t1, placePieceReturnOne
-    beq $s2, $t2, placePieceReturnTwo
-    beq $s2, $t3, placePieceReturnThree
+    beq $s2, $t0, placePieceReturnOne
+    beq $s2, $t1, placePieceReturnTwo
+    beq $s2, $t2, placePieceReturnThree
     
     placePieceReturnOne:
     li $v0, 1
@@ -99,6 +99,13 @@ piece_done:
     # Function epilogue
     lw $ra, 0($sp)
     addi $sp, $sp, 4
+    
+    li $s1, 0
+    li $s2, 0
+    li $s3, 0
+    li $s4, 0
+    li $s5, 0
+    li $s6, 0
     
     jr $ra
 # Function: printBoard
