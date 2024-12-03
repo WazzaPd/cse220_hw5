@@ -143,7 +143,8 @@ place_tile:
     bgt $a1, $t1, returnTwo	# col out of bounds
     
     #calculate offest address
-    mul $t3, $a1, $a2		# row * col
+    mul $t3, $a0, $t1		# row * width
+    add $t3, $t3, $a1		# add col
     add $t3, $t3, $t0		# add to get offset address
     
     lb $t4, 0($t3)		# Get value of board
