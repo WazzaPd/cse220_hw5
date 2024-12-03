@@ -42,6 +42,8 @@ zero_done:
 #   $a1 - ship_num
 placePieceOnBoard:
     # Function prologue
+    addi $sp, $sp, -4
+    sw $ra, 0($sp)
 
     # Load piece fields
     # First switch on type
@@ -62,6 +64,36 @@ placePieceOnBoard:
     j piece_done       # Invalid type
 
 piece_done:
+    
+    # result of place piece is in s2
+    li $t0, 1
+    li $t1, 2
+    li $t2, 3
+    
+    beq $s2, $zero, exitPlacePiece
+    beq $s2, $t1, placePieceReturnOne
+    beq $s2, $t2, placePieceReturnTwo
+    beq $s2, $t3, placePieceReturnThree
+    
+    placePieceReturnOne:
+    li $v0, 1
+    jal zeroOut
+    j exitPlacePiece
+    
+    placePieceReturnTwo:
+    li $v0, 2
+    jal zeroOut
+    j exitPlacePiece
+    
+    placePieceReturnThree:
+    li $v0, 3
+    jal zeroOut
+    
+    exitPlacePiece:
+    # Function epilogue
+    lw $ra, 0($sp)
+    addi $sp, $sp, 4
+    
     jr $ra
 # Function: printBoard
 # Arguments: None (uses global variables)
@@ -176,6 +208,39 @@ test_fit:
 
 T_orientation4:
     # Study the other T orientations in skeleton.asm to understand how to write this label/subroutine
+    
+    # row, col
+    move $a0, $s5          # s5 contains row
+    move $a1, $s6          # s6 contains col
+    move $a2, $s1	   #s1 contains value
+    jal place_tile
+    or $s2, $s2, $v0
+    
+    #row +1, col
+    move $a0, $s5
+    move $a1, $s6          
+    move $a2, $s1
+    addi $a0, $a0, 1	   
+    jal place_tile
+    or $s2, $s2, $v0
+    
+    #row +1, col +1
+    move $a0, $s5
+    move $a1, $s6          
+    move $a2, $s1
+    addi $a0, $a0, 1
+    addi $a1, $a0, 1	   
+    jal place_tile
+    or $s2, $s2, $v0
+    
+    #row +2, col
+    move $a0, $s5
+    move $a1, $s6          
+    move $a2, $s1	
+    addi $a0, $a0, 2   
+    jal place_tile
+    or $s2, $s2, $v0
+    
     j piece_done
 
 .include "skeleton.asm"
