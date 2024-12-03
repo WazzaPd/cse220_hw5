@@ -184,8 +184,8 @@ place_tile:
     lw $t1, board_width
     lw $t2, board_height
     
-    bge $a0, $t2, returnTwo	# row out of bounds
-    bge $a1, $t1, returnTwo	# col out of bounds
+    bgt $a0, $t2, returnTwo	# row out of bounds
+    bgt $a1, $t1, returnTwo	# col out of bounds
     
     #calculate offest address
     mul $t3, $a0, $t1		# row * width

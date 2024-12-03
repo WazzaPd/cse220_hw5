@@ -14,7 +14,7 @@ board:  .byte
 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 .asciiz "This is Professor Benz's extra space that is being used for preserving memory contents to avoid losing data"
 ship:  .word
-2, 1, 1, 6
+7, 4, 1, 6
 ship2:  .word
 3, 2, 3, 2
 ship3:  .word
@@ -30,6 +30,21 @@ ship6:  .word
 .globl main
 # Function: main
 main:
+
+    la $a0 ship
+    li $a1 1
+
+    jal placePieceOnBoard
+
+    move $a0, $v0         # Load int to print
+    li $v0, 1            # syscall: print int
+    syscall
+    li $v0, 4             # syscall: print string
+    la $a0, newline       # Load newline string
+    syscall
+
+    jal printBoard
+    
     la $a0 ship
     li $a1 1
 
