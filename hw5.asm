@@ -75,14 +75,17 @@ printBoard:
     		# get address
     		add $t6, $t5, $t0		#t6, now sotres the correct address
     		
-    		lw $a0, 0($t6)
-    		li $v0, 4		#print string
+    		lb $a0, 0($t6)
+    		li $v0, 11		#print single char
     		syscall
     		
-    		j row_loop
+    		addi $t4, $t4, 1
+    		
+    		j col_loop
     	
     	increment_row_loop:
     	addi $t3, $t3, 1
+    	j row_loop
     
     row_loop_done:
     
