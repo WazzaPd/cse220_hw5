@@ -76,7 +76,12 @@ printBoard:
     		add $t6, $t5, $t0		#t6, now sotres the correct address
     		
     		lb $a0, 0($t6)
-    		li $v0, 11		#print single char
+    		li $v0, 1		#print single char
+    		syscall
+    		
+    		#print space
+    		la $a0, space
+    		li $v0, 4	
     		syscall
     		
     		addi $t4, $t4, 1
@@ -85,6 +90,12 @@ printBoard:
     	
     	increment_row_loop:
     	addi $t3, $t3, 1
+    	
+    	#print newline
+    	la $a0, newline
+    	li $v0, 4	
+    	syscall
+    	
     	j row_loop
     
     row_loop_done:
