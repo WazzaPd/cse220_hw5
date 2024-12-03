@@ -46,6 +46,12 @@ placePieceOnBoard:
     sw $ra, 0($sp)
 
     # Load piece fields
+    move $s1, $a1
+    lw $s3, 0($a0)
+    lw $s4, 4($a0)
+    lw $s5, 8($a0)
+    lw $s6, 12($a0)
+    
     # First switch on type
     li $t0, 1
     beq $s3, $t0, piece_square
