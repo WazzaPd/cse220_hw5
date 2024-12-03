@@ -242,7 +242,7 @@ T_orientation4:
     move $a1, $s6          
     move $a2, $s1
     addi $a0, $a0, 1
-    addi $a1, $a0, 1	   
+    addi $a1, $a1, 1	   
     jal place_tile
     or $s2, $s2, $v0
     
