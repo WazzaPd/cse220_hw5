@@ -15,6 +15,22 @@ extra_newline: .asciiz "\n\n" # Extra newline at end
 # Returns: void
 zeroOut:
     # Function prologue
+    la $t0, board
+    lw $t1, board_width		# width
+    lw $t2, board_height	# height
+    mul $t3, $t1, $t2 		# size
+    li $t4, 0	 		#index
+    
+    iterate:
+    	beq $t3, $t4, zero_done
+    	
+    	#get address
+    	add $t5, $t4, $t0
+    	
+    	sb $zero, 0($t5)
+    	
+    	addi $t4, $t4, 1
+    	j iterate
 
 zero_done:
     # Function epilogue
@@ -54,6 +70,8 @@ piece_done:
 
 printBoard:
     # Function prologue
+    addi $sp, $sp, -4
+    sw $a0, 0($sp)
     
     la $t0, board
     lw $t1, board_width		# width
@@ -102,6 +120,8 @@ printBoard:
     
 
     # Function epilogue
+    lw $a0, 0($sp)
+    addi $sp, $sp, 4
     
     jr $ra                # Return
 
