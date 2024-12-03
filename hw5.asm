@@ -135,6 +135,33 @@ printBoard:
 # Uses global variables: board (char[]), board_width (int), board_height (int)
 
 place_tile:
+    la $t0, board
+    lw $t1, board_width
+    lw $t2, board_height
+    
+    bgt $a0, $t2, returnTwo	# row out of bounds
+    bgt $a1, $t1, returnTwo	# col out of bounds
+    
+    #calculate offest address
+    mul $t3, $a1, $a2		# row * col
+    add $t3, $t3, $t0		# add to get offset address
+    
+    lb $t4, 0($t3)		# Get value of board
+    
+    beq $t3, $zero, returnOne	# occupied check
+    
+    sb $a2, 0($t3)
+    
+    j place_tile_exit
+    
+    returnOne:
+    li $v0, 1
+    j place_tile_exit
+    
+    returnTwo:
+    li $v0, 2
+    
+    place_tile_exit: 
     jr $ra
 
 # Function: test_fit
