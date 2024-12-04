@@ -244,6 +244,8 @@ test_fit:
     	bgt $t2, $t4, returnFour	# check type out of bounds
     	bgt $t3, $t5, returnFour	#check orientaiton out of bounds
     	
+    	addi $a1, $s3, 1
+    	
     	jal placePieceOnBoard
     	or $s2, $s2, $v0
     	
@@ -252,12 +254,17 @@ test_fit:
     	j iterateShips
     
     finishedIterating:
+    beq $s2, $zero, returnZero
     li $t0, 1
     beq $s2, $t0, fitReturnOne
     li $t0, 2
     beq $s2, $t0, fitReturnOne
     li $t0, 3
     beq $s2, $t0, fitReturnThree
+    
+    returnZero:
+    li $v0, 0
+    j exitFit
     
     returnFour:
     li $v0, 4
