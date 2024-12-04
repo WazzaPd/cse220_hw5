@@ -42,8 +42,15 @@ zero_done:
 #   $a1 - ship_num
 placePieceOnBoard:
     # Function prologue
-    addi $sp, $sp, -4
+    addi $sp, $sp, -32
     sw $ra, 0($sp)
+    sw $s1, 4($sp)
+    sw $s2, 8($sp)
+    sw $s3, 12($sp)
+    sw $s4, 16($sp)
+    sw $s5, 20($sp)
+    sw $s6, 24($sp)
+    sw $a0, 28($sp)
 
     # Load piece fields
     move $s1, $a1
@@ -98,14 +105,15 @@ piece_done:
     exitPlacePiece:
     # Function epilogue
     lw $ra, 0($sp)
-    addi $sp, $sp, 4
+    lw $s1, 4($sp)
+    lw $s2, 8($sp)
+    lw $s3, 12($sp)
+    lw $s4, 16($sp)
+    lw $s5, 20($sp)
+    lw $s6, 24($sp)
+    lw $a0, 28($sp)
     
-    li $s1, 0
-    li $s2, 0
-    li $s3, 0
-    li $s4, 0
-    li $s5, 0
-    li $s6, 0
+    addi $sp, $sp, 32
     
     jr $ra
 # Function: printBoard
@@ -216,6 +224,63 @@ place_tile:
 #   $a0 - address of piece array (5 pieces)
 test_fit:
     # Function prologue
+    addi $sp, $sp, -16
+    sw $ra, 0($sp)
+    sw $s2, 4($sp)
+    sw $s3, 8($sp)
+    sw $s4, 12($sp)
+    
+    li $s2, 0
+    li $s3, 0	#index
+    li $s4, 5	#num pieces
+    iterateShips:
+    	beq $s3, $s4, finishedIterating
+    	
+    	lw $t2, 0($a0)	# type
+    	lw $t3, 4($a0)	# orientation
+    	li $t4, 7	# num of types
+    	li $t5, 4	# num of orientations
+    	
+    	bgt $t2, $t4, returnFour	# check type out of bounds
+    	bgt $t3, $t5, returnFour	#check orientaiton out of bounds
+    	
+    	jal placePieceOnBoard
+    	or $s2, $s2, $v0
+    	
+    	addi $a0, $a0, 16	#go to next struct
+    	addi $s3, $s3, 1 	#increment index
+    	j iterateShips
+    
+    finishedIterating:
+    li $t0, 1
+    beq $s2, $t0, fitReturnOne
+    li $t0, 2
+    beq $s2, $t0, fitReturnOne
+    li $t0, 3
+    beq $s2, $t0, fitReturnThree
+    
+    returnFour:
+    li $v0, 4
+    j exitFit
+    
+    fitReturnOne:
+    li $v0, 1
+    j exitFit
+    
+    fitReturnTwo:
+    li $v0, 2
+    j exitFit
+    
+    fitReturnThree:
+    li $v0, 3
+    
+    exitFit:
+    lw $ra, 0($sp)
+    lw $s2, 4($sp)
+    lw $s3, 8($sp)
+    lw $s4, 12($sp)
+    addi $sp, $sp, 16
+    
     jr $ra
 
 
