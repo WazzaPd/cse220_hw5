@@ -267,6 +267,7 @@ test_fit:
     j exitFit
     
     returnFour:
+    jal zeroOut
     li $v0, 4
     j exitFit
     
