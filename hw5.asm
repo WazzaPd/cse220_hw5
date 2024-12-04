@@ -258,7 +258,7 @@ test_fit:
     li $t0, 1
     beq $s2, $t0, fitReturnOne
     li $t0, 2
-    beq $s2, $t0, fitReturnOne
+    beq $s2, $t0, fitReturnTwo
     li $t0, 3
     beq $s2, $t0, fitReturnThree
     
